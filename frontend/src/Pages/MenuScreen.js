@@ -1,5 +1,4 @@
-
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getMenuItems } from '../services/api';
 import { Search, Plus, Minus } from 'lucide-react';
@@ -12,62 +11,17 @@ import burgerIcon from '../assests/icons/Burger1.jpg';
 import friesIcon from '../assests/icons/FrenchFries1.jpg'; 
 import veggiesIcon from '../assests/icons/Veggies1.jpg'; 
 
-
 const MenuScreen = () => {
   const [selectedCategory, setSelectedCategory] = useState('pizza');
   const [menuItems, setMenuItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [cart, setCart] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const categories = [
-    { 
-      id: 'burger', 
-      name: 'Burger', 
-      icon: <img src={burgerIcon} alt="Burger" className="category-icon-img" style={{width: '27px', height: '27px'}} /> 
-    },
-    { 
-      id: 'pizza', 
-      name: 'Pizza', 
-      icon: <img src={pizzaIcon} alt="Pizza" className="category-icon-img" style={{width: '27px', height: '27px'}} /> 
-    },
-    { 
-      id: 'drink', 
-      name: 'Drink', 
-      icon: <img src={drinkIcon} alt="Drink" className="category-icon-img" style={{width: '27px', height: '27px'}} /> 
-    },
-    { 
-      id: 'fries', 
-      name: 'Fries', 
-      icon: <img src={friesIcon} alt="Fries" className="category-icon-img" style={{width: '27px', height: '27px'}} /> 
-    },
-    { 
-      id: 'veggies', 
-      name: 'Veggies', 
-      icon: <img src={veggiesIcon} alt="Veggies" className="category-icon-img" style={{width: '27px', height: '27px'}} /> 
-    },
-  ];
-  
-  useEffect(() => {
-    fetchMenuItems();
-  }, [selectedCategory]);
-
-  useEffect(() => {
-    
-    if (searchQuery.trim() === '') {
-      setFilteredItems(menuItems);
-    } else {
-      const query = searchQuery.toLowerCase();
-      const filtered = menuItems.filter(item => 
-        item.name.toLowerCase().includes(query)
-      );
-      setFilteredItems(filtered);
-    }
-  }, [searchQuery, menuItems]);
-
-  const fetchMenuItems = async () => {
+  // Memoize fetchMenuItems with useCallback and include selectedCategory dependency
+  const fetchMenuItems = useCallback(async () => {
     try {
       setLoading(true);
       const response = await getMenuItems(selectedCategory);
@@ -79,7 +33,24 @@ const MenuScreen = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedCategory]);
+
+  // Fetch menu items whenever fetchMenuItems function changes (i.e., selectedCategory changes)
+  useEffect(() => {
+    fetchMenuItems();
+  }, [fetchMenuItems]);
+
+  useEffect(() => {
+    if (searchQuery.trim() === '') {
+      setFilteredItems(menuItems);
+    } else {
+      const query = searchQuery.toLowerCase();
+      const filtered = menuItems.filter(item => 
+        item.name.toLowerCase().includes(query)
+      );
+      setFilteredItems(filtered);
+    }
+  }, [searchQuery, menuItems]);
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
@@ -112,9 +83,10 @@ const MenuScreen = () => {
     localStorage.setItem('cart', JSON.stringify(cart));
     navigate('/checkout');
   };
+
   const handleRemoveFromCart = (item) => {
     const existingItem = cart.find(cartItem => cartItem._id === item._id);
-  
+
     if (existingItem) {
       if (existingItem.quantity === 1) {
         setCart(cart.filter(cartItem => cartItem._id !== item._id));
@@ -127,7 +99,34 @@ const MenuScreen = () => {
       }
     }
   };
-  
+
+  const categories = [
+    { 
+      id: 'burger', 
+      name: 'Burger', 
+      icon: <img src={burgerIcon} alt="Burger" className="category-icon-img" style={{width: '27px', height: '27px'}} /> 
+    },
+    { 
+      id: 'pizza', 
+      name: 'Pizza', 
+      icon: <img src={pizzaIcon} alt="Pizza" className="category-icon-img" style={{width: '27px', height: '27px'}} /> 
+    },
+    { 
+      id: 'drink', 
+      name: 'Drink', 
+      icon: <img src={drinkIcon} alt="Drink" className="category-icon-img" style={{width: '27px', height: '27px'}} /> 
+    },
+    { 
+      id: 'fries', 
+      name: 'Fries', 
+      icon: <img src={friesIcon} alt="Fries" className="category-icon-img" style={{width: '27px', height: '27px'}} /> 
+    },
+    { 
+      id: 'veggies', 
+      name: 'Veggies', 
+      icon: <img src={veggiesIcon} alt="Veggies" className="category-icon-img" style={{width: '27px', height: '27px'}} /> 
+    },
+  ];
 
   return (
     <div className="menu-screen">
@@ -166,8 +165,6 @@ const MenuScreen = () => {
 
       <section className="menu-section">
         <h2 className="section-title">{selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)}</h2>
-        
-       
         
         <div className="menu-grid">
           {filteredItems.map((item) => (
