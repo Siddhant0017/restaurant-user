@@ -4,11 +4,16 @@ const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 5001; // Using 5001 to avoid conflict with admin backend
+const PORT = process.env.PORT || 5001;
 
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// Root route for health check
+app.get('/', (req, res) => {
+  res.send('Backend is running!');
+});
 
 // Import routes
 const menuItemRoutes = require('./routes/menuItemRoutes');
@@ -20,7 +25,7 @@ app.use('/api/menu-items', menuItemRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/clients', clientRoutes);
 
-// Connect to MongoDB
+// Connect to MongoDB and start server
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
     console.log('Connected to MongoDB');
