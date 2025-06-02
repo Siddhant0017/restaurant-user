@@ -196,42 +196,44 @@ const CheckoutScreen = () => {
     currentX.current = e.clientX
   }
 
-  // Move these functions outside useEffect or declare them with const
+  // Update these event handlers
   const handleMouseMove = (e) => {
-    if (!isDragging) return
-  
-    currentX.current = e.clientX
-    const deltaX = currentX.current - startX.current
-    const containerWidth = swipeRef.current?.offsetWidth || 390
-    const maxSwipeDistance = containerWidth - 87
-  
+    if (!isDragging) return;
+    
+    currentX.current = e.clientX;
+    const deltaX = currentX.current - startX.current;
+    const containerWidth = swipeRef.current?.offsetWidth || 390;
+    const maxSwipeDistance = containerWidth - 87;
+    
     if (deltaX >= 0 && deltaX <= maxSwipeDistance) {
-      const progress = (deltaX / maxSwipeDistance) * 100
-      setSwipeProgress(progress)
+      const progress = (deltaX / maxSwipeDistance) * 100;
+      setSwipeProgress(progress);
     }
-  }
+  };
   
   const handleMouseUp = () => {
-    if (!isDragging) return
-  
-    setIsDragging(false)
-  
+    if (!isDragging) return;
+    
+    setIsDragging(false);
+    
     if (swipeProgress >= 70) {
-      handlePlaceOrder()
+      handlePlaceOrder();
     } else {
-      setSwipeProgress(0)
+      setSwipeProgress(0);
     }
-  }
+  };
   
   useEffect(() => {
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mouseup', handleMouseUp);
-  
+    if (isDragging) {
+      window.addEventListener('mousemove', handleMouseMove);
+      window.addEventListener('mouseup', handleMouseUp);
+    }
+    
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mouseup', handleMouseUp);
     };
-  }, []); // Empty dependency array since handlers are now defined outside
+  }, [isDragging, swipeProgress]); // Add dependencies
 
   return (
     <div className="checkout-screen-container">
