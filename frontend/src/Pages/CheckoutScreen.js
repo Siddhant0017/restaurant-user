@@ -266,7 +266,7 @@ const CheckoutScreen = () => {
           <div key={item._id} className="checkout-item-container">
             {/* Item Image */}
             <img 
-              src={`${process.env.REACT_APP_ADMIN_URL}${item.image}`} 
+              src={`${process.env.REACT_APP_ADMIN_URL}/uploads/${item.image}`} 
               alt={item.name} 
               className="checkout-item-image" 
               onError={(e) => {
