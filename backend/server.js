@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const path = require('path');
 require('dotenv').config();
 
 const app = express();
@@ -24,6 +25,15 @@ const clientRoutes = require('./routes/clientRoutes');
 app.use('/api/menu-items', menuItemRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/clients', clientRoutes);
+
+// Added this CORS configuration
+app.use(cors({
+  origin: ['https://user-side-application.netlify.app', 'http://localhost:3000'],
+  credentials: true
+}));
+
+// Added this to serve static files
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Connect to MongoDB and start server
 mongoose.connect(process.env.MONGO_URI)
