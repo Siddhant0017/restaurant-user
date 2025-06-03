@@ -169,15 +169,19 @@ const MenuScreen = () => {
           {filteredItems.map((item) => (
             <div key={item._id} className="menu-item">
               <div className="item-image-container">
+                
                 <img
                   src={`${process.env.REACT_APP_ADMIN_URL}${item.image}`}
                   alt={item.name}
                   className="item-image"
                   onError={(e) => {
+                    console.log('Image load error:', e);
                     e.target.onerror = null;
                   }}
                 />
               </div>
+             
+
               <div className="item-details">
                 <h3 className="item-name">{item.name}</h3>
                 <div className="item-price-action">

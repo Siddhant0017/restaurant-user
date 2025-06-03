@@ -270,6 +270,7 @@ const CheckoutScreen = () => {
               alt={item.name} 
               className="checkout-item-image" 
               onError={(e) => {
+                console.log('Image load error:', e);
                 e.target.onerror = null;
               }}
             />

@@ -26,13 +26,13 @@ app.use('/api/menu-items', menuItemRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/clients', clientRoutes);
 
-// Move CORS before routes
+// Moved CORS before routes
 app.use(cors({
   origin: ['https://user-side-application.netlify.app', 'http://localhost:3000'],
   credentials: true
 }));
 
-// Add this line to serve images from admin-app's uploads folder
+// Added this line to serve images from admin-app's uploads folder
 app.use('/uploads', express.static(path.join(__dirname, '../../admin-app/backend/uploads')));
 
 // Connect to MongoDB and start server
