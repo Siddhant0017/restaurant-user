@@ -14,6 +14,10 @@ const MenuItemSchema = new mongoose.Schema({
     required: true,
     enum: ['pizza', 'burger', 'drink', 'french fries', 'veggies']
   },
+  image: {
+    type: String,
+    required: true  // Make sure this is required
+  },
   available: {
     type: Boolean,
     default: true
