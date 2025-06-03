@@ -26,14 +26,14 @@ app.use('/api/menu-items', menuItemRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/clients', clientRoutes);
 
-// Added this CORS configuration
+// Move CORS before routes
 app.use(cors({
   origin: ['https://user-side-application.netlify.app', 'http://localhost:3000'],
   credentials: true
 }));
 
-// Added this to serve static files
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// Add this line to serve images from admin-app's uploads folder
+app.use('/uploads', express.static(path.join(__dirname, '../../admin-app/backend/uploads')));
 
 // Connect to MongoDB and start server
 mongoose.connect(process.env.MONGO_URI)

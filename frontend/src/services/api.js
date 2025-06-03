@@ -10,7 +10,16 @@ const api = axios.create({
 });
 
 // Menu Items
-export const getMenuItems = (category) => api.get(`/menu-items?category=${category}`);
+export const getMenuItems = async (category) => {
+  try {
+    const response = await api.get(`/menu-items?category=${category}`);
+    console.log('Menu items response:', response.data);
+    return response;
+  } catch (error) {
+    console.error('Error fetching menu items:', error);
+    throw error;
+  }
+};
 
 // Orders
 export const createOrder = (orderData) => api.post('/orders', orderData);
