@@ -6,10 +6,10 @@ import './MenuScreen.css';
 
 // Import category icons
 import drinkIcon from '../assests/icons/Drinks1.jpg';
-import pizzaIcon from '../assests/icons/Pizza.png'; 
-import burgerIcon from '../assests/icons/Burger1.jpg'; 
-import friesIcon from '../assests/icons/FrenchFries1.jpg'; 
-import veggiesIcon from '../assests/icons/Veggies1.jpg'; 
+import pizzaIcon from '../assests/icons/Pizza.png';
+import burgerIcon from '../assests/icons/Burger1.jpg';
+import friesIcon from '../assests/icons/FrenchFries1.jpg';
+import veggiesIcon from '../assests/icons/Veggies1.jpg';
 
 const MenuScreen = () => {
   const [selectedCategory, setSelectedCategory] = useState('pizza');
@@ -35,7 +35,6 @@ const MenuScreen = () => {
     }
   }, [selectedCategory]);
 
-  // Fetch menu items whenever fetchMenuItems function changes (i.e., selectedCategory changes)
   useEffect(() => {
     fetchMenuItems();
   }, [fetchMenuItems]);
@@ -45,7 +44,7 @@ const MenuScreen = () => {
       setFilteredItems(menuItems);
     } else {
       const query = searchQuery.toLowerCase();
-      const filtered = menuItems.filter(item => 
+      const filtered = menuItems.filter(item =>
         item.name.toLowerCase().includes(query)
       );
       setFilteredItems(filtered);
@@ -101,30 +100,30 @@ const MenuScreen = () => {
   };
 
   const categories = [
-    { 
-      id: 'burger', 
-      name: 'Burger', 
-      icon: <img src={burgerIcon} alt="Burger" className="category-icon-img" style={{width: '27px', height: '27px'}} /> 
+    {
+      id: 'burger',
+      name: 'Burger',
+      icon: <img src={burgerIcon} alt="Burger" className="category-icon-img" style={{ width: '27px', height: '27px' }} />
     },
-    { 
-      id: 'pizza', 
-      name: 'Pizza', 
-      icon: <img src={pizzaIcon} alt="Pizza" className="category-icon-img" style={{width: '27px', height: '27px'}} /> 
+    {
+      id: 'pizza',
+      name: 'Pizza',
+      icon: <img src={pizzaIcon} alt="Pizza" className="category-icon-img" style={{ width: '27px', height: '27px' }} />
     },
-    { 
-      id: 'drink', 
-      name: 'Drink', 
-      icon: <img src={drinkIcon} alt="Drink" className="category-icon-img" style={{width: '27px', height: '27px'}} /> 
+    {
+      id: 'drink',
+      name: 'Drink',
+      icon: <img src={drinkIcon} alt="Drink" className="category-icon-img" style={{ width: '27px', height: '27px' }} />
     },
-    { 
-      id: 'fries', 
-      name: 'Fries', 
-      icon: <img src={friesIcon} alt="Fries" className="category-icon-img" style={{width: '27px', height: '27px'}} /> 
+    {
+      id: 'fries',
+      name: 'Fries',
+      icon: <img src={friesIcon} alt="Fries" className="category-icon-img" style={{ width: '27px', height: '27px' }} />
     },
-    { 
-      id: 'veggies', 
-      name: 'Veggies', 
-      icon: <img src={veggiesIcon} alt="Veggies" className="category-icon-img" style={{width: '27px', height: '27px'}} /> 
+    {
+      id: 'veggies',
+      name: 'Veggies',
+      icon: <img src={veggiesIcon} alt="Veggies" className="category-icon-img" style={{ width: '27px', height: '27px' }} />
     },
   ];
 
@@ -135,15 +134,15 @@ const MenuScreen = () => {
           <h1>Good evening</h1>
           <p>Place your order here</p>
         </div>
-        
+
         <div className="search-container">
           <div className="search-icon">
             <Search size={24} color="#A8A8A8" />
           </div>
-          <input 
-            type="text" 
-            placeholder="Search" 
-            className="search-input" 
+          <input
+            type="text"
+            placeholder="Search"
+            className="search-input"
             value={searchQuery}
             onChange={handleSearchChange}
           />
@@ -165,18 +164,17 @@ const MenuScreen = () => {
 
       <section className="menu-section">
         <h2 className="section-title">{selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)}</h2>
-        
+
         <div className="menu-grid">
           {filteredItems.map((item) => (
             <div key={item._id} className="menu-item">
               <div className="item-image-container">
-                <img 
-                  src={`http://localhost:5000${item.image}`}
-                  alt={item.name} 
+                <img
+                  src={`${process.env.REACT_APP_API_URL}${item.image}`}
+                  alt={item.name}
                   className="item-image"
                   onError={(e) => {
                     e.target.onerror = null;
-                    e.target.src = "/placeholder.svg";
                   }}
                 />
               </div>

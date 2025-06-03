@@ -7,6 +7,7 @@ import deliveriyImg from "../assests/icons/Group 75.jpg"
 import CookingInstruction from "./CookingInstruction"
 import "./CheckoutScreen.css"
 
+
 const CheckoutScreen = () => {
   const [cart, setCart] = useState([])
   const [orderType, setOrderType] = useState("dine-in")
@@ -265,12 +266,11 @@ const CheckoutScreen = () => {
           <div key={item._id} className="checkout-item-container">
             {/* Item Image */}
             <img 
-              src={`http://localhost:5000/${item.image}`} 
+              src={`${process.env.REACT_APP_API_URL}${item.image}`} 
               alt={item.name} 
               className="checkout-item-image" 
               onError={(e) => {
                 e.target.onerror = null;
-                e.target.src = "/placeholder.svg";
               }}
             />
 
