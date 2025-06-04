@@ -36,16 +36,9 @@ app.use('/api/menu-items', menuItemRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/clients', clientRoutes);
 
-// Enhanced CORS configuration (remove the duplicate one below)
+// Moved CORS before routes
 app.use(cors({
-  origin: [
-    'https://user-side-application.netlify.app',
-    'http://localhost:3000',
-    'http://localhost:3001',
-    'https://admin-side-app.netlify.app'
-  ],
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  origin: ['https://user-side-application.netlify.app', 'http://localhost:3000'],
   credentials: true
 }));
 
