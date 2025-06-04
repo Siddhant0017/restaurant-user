@@ -7,8 +7,18 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 5001;
 
-// Middleware
-app.use(cors());
+// Enhanced CORS configuration
+app.use(cors({
+  origin: [
+    'https://user-side-application.netlify.app/',
+    'http://localhost:3000','http://localhost:3001',
+    'https://admin-side-app.netlify.app/'
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+}));
+
 app.use(express.json());
 
 // Root route for health check
@@ -26,9 +36,16 @@ app.use('/api/menu-items', menuItemRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/clients', clientRoutes);
 
-// Moved CORS before routes
+// Enhanced CORS configuration (remove the duplicate one below)
 app.use(cors({
-  origin: ['https://user-side-application.netlify.app', 'http://localhost:3000'],
+  origin: [
+    'https://user-side-application.netlify.app',
+    'http://localhost:3000',
+    'http://localhost:3001',
+    'https://admin-side-app.netlify.app'
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
 }));
 
