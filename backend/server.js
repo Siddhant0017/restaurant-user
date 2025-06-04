@@ -10,9 +10,9 @@ const PORT = process.env.PORT || 5001;
 // Enhanced CORS configuration
 app.use(cors({
   origin: [
-    'https://user-side-application.netlify.app/',
+    'https://user-side-application.netlify.app',
     'http://localhost:3000','http://localhost:3001',
-    'https://admin-side-app.netlify.app/'
+    'https://admin-side-app.netlify.app'
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
@@ -43,7 +43,7 @@ app.use(cors({
 }));
 
 // Added this line to serve images from admin-app's uploads folder
-app.use('/uploads', express.static(path.join(__dirname, '../../admin-app/backend/uploads')));
+app.use('/uploads', express.static(path.join(__dirname, '../../admin-app/backend/public/uploads')));
 
 // Connect to MongoDB and start server
 mongoose.connect(process.env.MONGO_URI)
